@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Vehicle Info{% endblock %}
+
+{% block content %}
+    <h1>Vehicle Info</h1>
+    <h2>Customer Information</h2>
+    <p>Name: {{ customer.name }}</p>
+
+    <h2>Vehicle Information</h2>
+    <p>Model: {{ vehicle.model }}</p>
+    <p>License Plate: {{ vehicle.license_plate }}</p>
+{% endblock %}

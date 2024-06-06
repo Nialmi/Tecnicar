@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from .models import User
+from .models import User, Customer, Vehicle
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
@@ -31,6 +31,11 @@ class CustomerRegistrationForm(FlaskForm):
     vehicle_model = StringField('Vehicle Model', validators=[DataRequired()])
     vehicle_license_plate = StringField('Vehicle License Plate', validators=[DataRequired()])
     submit = SubmitField('Register')
+
+    def validate_vehicle_license_plate(self, vehicle_license_plate):
+        vehicle = Vehicle.query.filter_by(license_plate=vehicle_license_plate.data).first()
+        if vehicle:
+            raise ValidationError('This license plate is already registered. Please choose a different one.')
 
 class UserRegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])

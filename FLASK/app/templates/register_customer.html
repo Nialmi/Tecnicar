@@ -4,19 +4,37 @@
 
 {% block content %}
     <h1>Register Customer and Vehicle</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.customer_name.label }} {{ form.customer_name(size=20) }}
-        </div>
-        <div>
-            {{ form.vehicle_model.label }} {{ form.vehicle_model(size=20) }}
-        </div>
-        <div>
-            {{ form.vehicle_license_plate.label }} {{ form.vehicle_license_plate(size=20) }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+    <div style="display: flex; align-items: flex-start;">
+        <form method="POST" id="registerForm">
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.customer_name.label }} {{ form.customer_name(size=20) }}
+            </div>
+            <div>
+                {{ form.vehicle_model.label }} {{ form.vehicle_model(size=20) }}
+            </div>
+            <div>
+                {{ form.vehicle_license_plate.label }} {{ form.vehicle_license_plate(size=20) }}
+            </div>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+        {% if qr_img %}
+            <div style="margin-left: 20px;">
+                <h2>Generated QR Code:</h2>
+                <img src="data:image/png;base64,{{ qr_img }}" alt="QR Code">
+                <button onclick="refreshPage()">Refresh</button>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function refreshPage() {
+        document.getElementById("registerForm").reset();
+        window.location.reload();
+    }
+</script>
 {% endblock %}

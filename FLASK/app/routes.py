@@ -3,6 +3,11 @@ from flask_login import login_user, current_user, logout_user, login_required
 from .forms import RegistrationForm, LoginForm, CustomerRegistrationForm, UserRegistrationForm
 from .models import User, Customer, Vehicle
 from . import db, bcrypt
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+from flask import send_file
+import base64
 
 @app.route('/')
 @app.route('/home')
@@ -53,16 +58,29 @@ def register_customer():
     if current_user.role != 'operator':
         return redirect(url_for('home'))
     form = CustomerRegistrationForm()
+    qr_img = None
     if form.validate_on_submit():
-        customer = Customer(name=form.customer_name.data)
-        db.session.add(customer)
-        db.session.commit()
-        vehicle = Vehicle(model=form.vehicle_model.data, license_plate=form.vehicle_license_plate.data, owner=customer)
-        db.session.add(vehicle)
-        db.session.commit()
-        flash('Customer and vehicle registered successfully!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register_customer.html', title='Register Customer', form=form)
+        try:
+            customer = Customer(name=form.customer_name.data)
+            db.session.add(customer)
+            db.session.commit()
+            vehicle = Vehicle(model=form.vehicle_model.data, license_plate=form.vehicle_license_plate.data, owner=customer)
+            db.session.add(vehicle)
+            db.session.commit()
+
+            # Generar el código QR
+            qr_data = url_for('vehicle_info', vehicle_id=vehicle.id, _external=True)
+            img = qrcode.make(qr_data)
+            buf = BytesIO()
+            img.save(buf)
+            buf.seek(0)
+            qr_img = base64.b64encode(buf.getvalue()).decode('utf-8')  # Convertir a Base64
+
+            flash('Customer and vehicle registered successfully!', 'success')
+        except IntegrityError:
+            db.session.rollback()
+            flash('This license plate is already registered. Please choose a different one.', 'danger')
+    return render_template('register_customer.html', title='Register Customer', form=form, qr_img=qr_img)
 
 # Administración
 @app.route('/admin')
@@ -102,3 +120,10 @@ def admin_view_records():
         return redirect(url_for('home'))
     customers = Customer.query.all()
     return render_template('admin_view_records.html', title='View Records', customers=customers)
+
+@app.route('/vehicle/<int:vehicle_id>')
+@login_required
+def vehicle_info(vehicle_id):
+    vehicle = Vehicle.query.get_or_404(vehicle_id)
+    customer = Customer.query.get_or_404(vehicle.customer_id)
+    return render_template('vehicle_info.html', vehicle=vehicle, customer=customer)
