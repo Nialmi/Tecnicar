@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Vehicle Reports{% endblock %}
+
+{% block content %}
+    <h1>Vehicle Reports</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Model</th>
+            <th>License Plate</th>
+            <th>Owner</th>
+        </tr>
+        {% for vehicle in vehicles %}
+        <tr>
+            <td>{{ vehicle.id }}</td>
+            <td>{{ vehicle.model }}</td>
+            <td>{{ vehicle.license_plate }}</td>
+            <td>{{ vehicle.owner.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

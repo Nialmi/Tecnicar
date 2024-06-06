@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}View Records{% endblock %}
+
+{% block content %}
+    <h1>View Records</h1>
+    <h2>Customers</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Vehicles</th>
+        </tr>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.id }}</td>
+            <td>{{ customer.name }}</td>
+            <td>
+                <ul>
+                    {% for vehicle in customer.vehicles %}
+                    <li>{{ vehicle.model }} ({{ vehicle.license_plate }})</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
