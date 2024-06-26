@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Inicio de Sesión{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.email.label }} {{ form.email(size=20) }}
-        </div>
-        <div>
-            {{ form.password.label }} {{ form.password(size=20) }}
-        </div>
-        <div>
-            {{ form.remember() }} {{ form.remember.label }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+<h1>Iniciar Sesión</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.email.label }} {{ form.email(size=20) }}
+    </div>
+    <div>
+        {{ form.password.label }} {{ form.password(size=20) }}
+    </div>
+    <div>
+        {{ form.remember() }} {{ form.remember.label }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
 {% endblock %}

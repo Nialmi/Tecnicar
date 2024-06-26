@@ -1,14 +1,11 @@
+/* static/css/styles.css */
+
 /* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #bebebe;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
 }
 
 nav {
@@ -34,16 +31,26 @@ h1 {
     color: #343a40;
 }
 
-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
 }
 
-form div {
-    margin-bottom: 15px;
+form {
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    margin-top: 20px;
 }
+
 
 form label {
     display: block;
@@ -52,9 +59,11 @@ form label {
 }
 
 form input[type="text"],
+form input[type="number"],
 form input[type="email"],
 form input[type="password"],
-form select {
+form select,
+form textarea {
     width: 100%;
     padding: 10px;
     margin: 5px 0 10px 0;
@@ -80,9 +89,8 @@ form button:hover {
 }
 
 .flash-messages {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #ddd;
+    padding: 2px;
+    border: 1px solid #bebebe;
     border-radius: 5px;
     width: 100%;
     max-width: 500px;
@@ -90,9 +98,9 @@ form button:hover {
 }
 
 .flash-success {
-    background-color: #d4edda;
+    background-color: #bebebe;
     color: #155724;
-    border-color: #c3e6cb;
+    border-color: #bebebe;
 }
 
 .flash-danger {
@@ -102,7 +110,12 @@ form button:hover {
 }
 
 .flash-info {
-    background-color: #d1ecf1;
+    background-color: #bebebe;
     color: #0c5460;
-    border-color: #bee5eb;
+    border-color: #bebebe;
+}
+
+#vehiclesChart {
+    max-width: 100%;
+    height: auto;
 }

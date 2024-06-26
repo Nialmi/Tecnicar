@@ -19,7 +19,10 @@ class User(db.Model, UserMixin):
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    document = db.Column(db.Integer, unique=True, nullable=False)
     name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    phone= db.Column(db.Integer, nullable= False)
     vehicles = db.relationship('Vehicle', backref='owner', lazy=True)
 
     def __repr__(self):
@@ -27,9 +30,15 @@ class Customer(db.Model):
 
 class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    license_plate = db.Column(db.String(100), unique=True, nullable=False)
     model = db.Column(db.String(100), nullable=False)
-    license_plate = db.Column(db.String(20), unique=True, nullable=False)
+    vehicle_color = db.Column(db.String(50), nullable=False)
+    vehicle_type = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(60), default='Levantamiento')
+    username = db.Column(db.String(120), nullable=True)
+    workshop = db.Column(db.String(120), nullable=False)
+    comentario = db.Column(db.String(500))
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
 
     def __repr__(self):
-        return f"Vehicle('{self.model}', '{self.license_plate}')"
+        return f"Vehicle('{self.model}', '{self.license_plate}', '{self.vehicle_color}', '{self.vehicle_type}')"

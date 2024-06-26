@@ -3,10 +3,10 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Admin Dashboard</h1>
-    <ul>
-        <li><a href="{{ url_for('admin_reports') }}">Vehicle Reports</a></li>
-        <li><a href="{{ url_for('admin_create_user') }}">Create User</a></li>
-        <li><a href="{{ url_for('admin_view_records') }}">View Records</a></li>
-    </ul>
+<h1>Panel Administrador</h1>
+<ul>
+    <li><a href="{{ url_for('admin_reports') }}">Reporte de Vehiculos</a></li>
+    <li><a href="{{ url_for('admin_view_records') }}">Lista de Registrados</a></li>
+    <li><a href="{{ url_for('admin_create_user') }}">Crear Usuarios</a></li>
+</ul>
 {% endblock %}

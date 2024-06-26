@@ -1,23 +1,124 @@
 {% extends "base.html" %}
 
-{% block title %}Vehicle Reports{% endblock %}
+{% block title %}Reporte{% endblock %}
 
 {% block content %}
-    <h1>Vehicle Reports</h1>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Model</th>
-            <th>License Plate</th>
-            <th>Owner</th>
-        </tr>
-        {% for vehicle in vehicles %}
-        <tr>
-            <td>{{ vehicle.id }}</td>
-            <td>{{ vehicle.model }}</td>
-            <td>{{ vehicle.license_plate }}</td>
-            <td>{{ vehicle.owner.name }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="container">
+    <h1>Reportes de Vehículos</h1>
+
+    <canvas id="vehiclesChart" width="800" height="400"></canvas>
+
+    <form id="filtersForm" class="form-group">
+        <label for="state_filter">Estado:</label>
+        <select id="state_filter" name="state_filter" class="form-control">
+            <option value="">Todos</option>
+            {% for s in status %}
+            <option value="{{ s[0] }}">{{ s[0] }}</option>
+            {% endfor %}
+        </select>
+
+        {% if workshops %}
+        <label for="workshop_filter">Taller:</label>
+        <select id="workshop_filter" name="workshop_filter" class="form-control">
+            <option value="">Todos</option>
+            {% for workshop in workshops %}
+            <option value="{{ workshop[0] }}">{{ workshop[0] }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var ctx = document.getElementById('vehiclesChart').getContext('2d');
+
+        // Define a set of colors for different statuses
+        var colorPalette = {
+            'Vehiculo en liquidación': 'rgba(255, 99, 132, 0.2)',
+            'Orden Aprobada': 'rgba(54, 162, 235, 0.2)',
+            'Recepción de Repuestos': 'rgba(255, 206, 86, 0.2)',
+            'Desarme': 'rgba(75, 192, 192, 0.2)',
+            'Desabolladura': 'rgba(153, 102, 255, 0.2)',
+            'Levantamiento': 'rgba(255, 162, 235, 0.2)',
+            'Preparación': 'rgba(255, 159, 64, 0.2)',
+            'Pintura': 'rgba(255, 159, 64, 0.2)',
+            'Ensamble': 'rgba(255, 159, 64, 0.2)',
+            'Brillado': 'rgba(255, 159, 64, 0.2)',
+            'Lavado': 'rgba(255, 159, 64, 0.2)',
+            'Terminación': 'rgba(255, 159, 64, 0.2)',
+            'Entrega': 'rgba(255, 159, 64, 0.2)'
+        };
+
+        var vehiclesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: []
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+        function updateChart(data) {
+            var workshops = Object.keys(data);
+            var statuses = [...new Set(workshops.flatMap(workshop => Object.keys(data[workshop])))];
+
+            var datasets = statuses.map(status => ({
+                label: status,
+                data: workshops.map(workshop => data[workshop][status] || 0),
+                backgroundColor: colorPalette[status] || 'rgba(201, 203, 207, 0.2)',
+                borderColor: colorPalette[status] ? colorPalette[status].replace('0.2', '1') : 'rgba(201, 203, 207, 1)',
+                borderWidth: 1
+            }));
+
+            vehiclesChart.data.labels = workshops;
+            vehiclesChart.data.datasets = datasets;
+            vehiclesChart.update();
+        }
+
+        $('#filtersForm').on('submit', function (event) {
+            event.preventDefault();
+            var state_filter = $('#state_filter').val();
+            var workshop_filter = $('#workshop_filter').val();
+
+            $.ajax({
+                url: "{{ url_for('get_report_data') }}",
+                method: "POST",
+                data: {
+                    state_filter: state_filter,
+                    workshop_filter: workshop_filter
+                },
+                success: function (response) {
+                    updateChart(response);
+                }
+            });
+        });
+
+        // Inicialmente cargar todos los datos
+        $.ajax({
+            url: "{{ url_for('get_report_data') }}",
+            method: "POST",
+            success: function (response) {
+                updateChart(response);
+            }
+        });
+    });
+</script>
+
+
+
 {% endblock %}

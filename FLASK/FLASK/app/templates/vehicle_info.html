@@ -3,11 +3,27 @@
 {% block title %}Vehicle Info{% endblock %}
 
 {% block content %}
-    <h1>Vehicle Info</h1>
-    <h2>Customer Information</h2>
-    <p>Name: {{ customer.name }}</p>
-
-    <h2>Vehicle Information</h2>
-    <p>Model: {{ vehicle.model }}</p>
-    <p>License Plate: {{ vehicle.license_plate }}</p>
+<h1>Información del Vehículo</h1>
+<p><strong>Propietario:</strong> {{ customer.name }} {{ customer.last_name }}</p>
+<p><strong>Matrícula:</strong> {{ vehicle.license_plate }}</p>
+<p><strong>Modelo:</strong> {{ vehicle.model }}</p>
+<p><strong>Color:</strong> {{ vehicle.vehicle_color }}</p>
+<p><strong>Tipo:</strong> {{ vehicle.vehicle_type }}</p>
+<p><strong>Estado:</strong> {{ vehicle.status }}</p>
+<p><strong>Comentarios:</strong> {{ vehicle.comentario }}</p>
+<br>
+<hr>
+<h2>Actualizar Estado del Vehículo</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.status.label }} {{ form.status() }}
+    </div>
+    <div>
+        {{ form.comentario.label }} {{ form.comentario() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
 {% endblock %}

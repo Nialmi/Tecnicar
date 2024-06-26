@@ -1,30 +1,60 @@
 {% extends "base.html" %}
 
-{% block title %}Register Customer{% endblock %}
+{% block title %}Registro{% endblock %}
 
 {% block content %}
-    <h1>Register Customer and Vehicle</h1>
-    <div style="display: flex; align-items: flex-start;">
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.customer_name.label }} {{ form.customer_name(size=20) }}
-            </div>
-            <div>
-                {{ form.vehicle_model.label }} {{ form.vehicle_model(size=20) }}
-            </div>
-            <div>
-                {{ form.vehicle_license_plate.label }} {{ form.vehicle_license_plate(size=20) }}
-            </div>
-            <div>
-                {{ form.submit() }}
-            </div>
-        </form>
-        {% if qr_img %}
-            <div style="margin-left: 20px;">
-                <h2>Generated QR Code:</h2>
-                <img src="data:image/png;base64,{{ qr_img }}" alt="QR Code">
-            </div>
-        {% endif %}
+<h1>Registrar Cliente y Vehiculo</h1>
+<form method="POST" id="registerForm">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.customer_document.label }} {{ form.customer_document(size=20) }}
     </div>
+    <div>
+        {{ form.customer_name.label }} {{ form.customer_name(size=20) }}
+    </div>
+    <div>
+        {{ form.customer_last_name.label }} {{ form.customer_last_name(size=20) }}
+    </div>
+    <div>
+        {{ form.customer_phone.label }} {{ form.customer_phone(size=20) }}
+    </div>
+    <div>
+        {{ form.vehicle_license_plate.label }} {{ form.vehicle_license_plate(size=20) }}
+    </div>
+    <div>
+        {{ form.vehicle_model.label }} {{ form.vehicle_model(size=20) }}
+    </div>
+    <div>
+        {{ form.vehicle_color.label }} {{ form.vehicle_color(size=20) }}
+    </div>
+    <div>
+        {{ form.vehicle_type.label }} {{ form.vehicle_type() }}
+    </div>
+    <div>
+        {{ form.aseguradora.label }} {{ form.aseguradora() }}
+    </div>
+    <div>
+        {{ form.workshop.label }} {{ form.workshop() }}
+    </div>
+
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% if qr_img %}
+<div style="margin-left: 20px;">
+    <h2>Generated QR Code:</h2>
+    <img src="data:image/png;base64,{{ qr_img }}" alt="QR Code">
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function refreshPage() {
+        document.getElementById("registerForm").reset();
+        window.location.reload();
+    }
+</script>
 {% endblock %}

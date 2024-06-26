@@ -3,26 +3,26 @@
 {% block title %}Create User{% endblock %}
 
 {% block content %}
-    <h1>Create User</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.username.label }} {{ form.username(size=20) }}
-        </div>
-        <div>
-            {{ form.email.label }} {{ form.email(size=20) }}
-        </div>
-        <div>
-            {{ form.password.label }} {{ form.password(size=20) }}
-        </div>
-        <div>
-            {{ form.confirm_password.label }} {{ form.confirm_password(size=20) }}
-        </div>
-        <div>
-            {{ form.role.label }} {{ form.role(size=20) }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+<h1>Create User</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.username.label }} {{ form.username(size=20) }}
+    </div>
+    <div>
+        {{ form.email.label }} {{ form.email(size=20) }}
+    </div>
+    <div>
+        {{ form.password.label }} {{ form.password(size=20) }}
+    </div>
+    <div>
+        {{ form.confirm_password.label }} {{ form.confirm_password(size=20) }}
+    </div>
+    <div>
+        {{ form.role.label }} {{ form.role() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
 {% endblock %}
